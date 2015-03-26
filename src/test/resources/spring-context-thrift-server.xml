@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+	default-lazy-init="false">
+
+	<!-- zookeeper -->
+	<bean id="thriftZookeeper" class="cn.slimsmart.thrift.rpc.zookeeper.ZookeeperFactory"
+		destroy-method="close">
+		<property name="zkHosts"
+			value="192.168.110.71:2181,192.168.100.90:2181" />
+		<property name="namespace" value="cn.slimsmart.thrift.rpc.demo" />
+		<property name="connectionTimeout" value="3000" />
+		<property name="sessionTimeout" value="3000" />
+		<property name="singleton" value="true" />
+	</bean>
+	<bean id="sericeAddressRegister"
+		class="cn.slimsmart.thrift.rpc.zookeeper.ThriftServerAddressRegisterZookeeper"
+		destroy-method="close">
+		<property name="zkClient" ref="thriftZookeeper" />
+	</bean>
+	<bean id="echoSerivceImpl" class="cn.slimsmart.thrift.rpc.demo.EchoSerivceImpl" />
+
+	<bean id="echoSerivce" class="cn.slimsmart.thrift.rpc.ThriftServiceServerFactory"
+		destroy-method="close">
+		<property name="service" ref="echoSerivceImpl" />
+		<property name="port" value="9000" />
+		<property name="version" value="1.0.0" />
+		<property name="weight" value="1" />
+		<property name="thriftServerAddressRegister" ref="sericeAddressRegister" />
+	</bean>
+	
+	<bean id="echoSerivce1" class="cn.slimsmart.thrift.rpc.ThriftServiceServerFactory"
+		destroy-method="close">
+		<property name="service" ref="echoSerivceImpl" />
+		<property name="port" value="9001" />
+		<property name="version" value="1.0.0" />
+		<property name="weight" value="1" />
+		<property name="thriftServerAddressRegister" ref="sericeAddressRegister" />
+	</bean>
+	
+	<bean id="echoSerivce2" class="cn.slimsmart.thrift.rpc.ThriftServiceServerFactory"
+		destroy-method="close">
+		<property name="service" ref="echoSerivceImpl" />
+		<property name="port" value="9002" />
+		<property name="version" value="1.0.0" />
+		<property name="weight" value="1" />
+		<property name="thriftServerAddressRegister" ref="sericeAddressRegister" />
+	</bean>
+</beans>
