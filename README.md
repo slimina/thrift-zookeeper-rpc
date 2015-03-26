@@ -16,7 +16,11 @@
 2）Thrift通过两种方式调用服务Client和Iface
 
 // *) Client API 调用
+
 (EchoService.Client)client.echo("hello lilei");  ---(1)
+
 // *) Service 接口 调用
+
 (EchoService.Iface)service.echo("hello lilei");  ---(2)
+
 Client API的方式, 不推荐, 我们推荐Service接口的方式(服务化)。
