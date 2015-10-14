@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
@@ -28,6 +29,8 @@ public class ThriftServerAddressProviderZookeeper implements ThriftServerAddress
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
+	private CountDownLatch countDownLatch= new CountDownLatch(1);
+	
 	// 注册服务
 	private String service;
 	// 服务版本号
@@ -77,6 +80,7 @@ public class ThriftServerAddressProviderZookeeper implements ThriftServerAddress
 		}
 		buildPathChildrenCache(zkClient, getServicePath(), true);
 		cachedPath.start(StartMode.POST_INITIALIZED_EVENT);
+		countDownLatch.await();
 	}
 
 	private String getServicePath(){
@@ -98,12 +102,16 @@ public class ThriftServerAddressProviderZookeeper implements ThriftServerAddress
 				case CONNECTION_LOST:
 					logger.warn("Connection error,waiting...");
 					return;
+				case INITIALIZED:
+				//	countDownLatch.countDown();
+					logger.warn("Connection init ...");
 				default:
 					//
 				}
 				// 任何节点的时机数据变动,都会rebuild,此处为一个"简单的"做法.
 				cachedPath.rebuild();
 				rebuild();
+				countDownLatch.countDown();
 			}
 
 			protected void rebuild() throws Exception {

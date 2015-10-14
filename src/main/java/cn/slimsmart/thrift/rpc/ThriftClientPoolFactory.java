@@ -82,6 +82,10 @@ public class ThriftClientPoolFactory extends BasePoolableObjectFactory<TServiceC
 	@Override
 	public TServiceClient makeObject() throws Exception {
 		InetSocketAddress address = serverAddressProvider.selector();
+		if(address==null){
+			logger.warn("found no registered service...");
+			return null;
+		}
 		TSocket tsocket = new TSocket(address.getHostName(), address.getPort());
 		TTransport transport = new TFramedTransport(tsocket);
 		TProtocol protocol = new TBinaryProtocol(transport);

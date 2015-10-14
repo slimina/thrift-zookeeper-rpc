@@ -20,18 +20,7 @@ public class Client {
 		try {
 			ApplicationContext context = new ClassPathXmlApplicationContext("spring-context-thrift-client.xml");
 			EchoSerivce.Iface echoSerivce = (EchoSerivce.Iface) context.getBean("echoSerivce");
-			Thread.sleep(1000);
-			for (int i = 0; i < 100; i++) {
-				Thread.sleep(3000);
-				try {
-					System.out.println(echoSerivce.echo("hello----"+i));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				//TThread t = new TThread(echoSerivce);
-				//t.start();
-			}
-			Thread.sleep(3000000);
+			System.out.println(echoSerivce.echo("hello--echo"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,11 +28,9 @@ public class Client {
 
 	static class TThread extends Thread {
 		EchoSerivce.Iface echoSerivce;
-
 		TThread(EchoSerivce.Iface service) {
 			echoSerivce = service;
 		}
-
 		public void run() {
 			try {
 				for (int i = 0; i < 10; i++) {

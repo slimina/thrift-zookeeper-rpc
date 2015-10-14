@@ -12,7 +12,7 @@
 	<bean id="thriftZookeeper" class="cn.slimsmart.thrift.rpc.zookeeper.ZookeeperFactory"
 		destroy-method="close">
 		<property name="zkHosts"
-			value="192.168.110.71:2181,192.168.100.90:2181" />
+			value="192.168.1.90:2181" />
 		<property name="namespace" value="cn.slimsmart.thrift.rpc.demo" />
 		<property name="connectionTimeout" value="3000" />
 		<property name="sessionTimeout" value="3000" />
