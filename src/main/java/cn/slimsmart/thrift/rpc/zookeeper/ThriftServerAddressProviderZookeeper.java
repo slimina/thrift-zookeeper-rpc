@@ -1,5 +1,6 @@
 package cn.slimsmart.thrift.rpc.zookeeper;
 
+import java.io.Closeable;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +24,7 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * 使用zookeeper作为"config"中心,使用apache-curator方法库来简化zookeeper开发
  */
-public class ThriftServerAddressProviderZookeeper implements ThriftServerAddressProvider, InitializingBean {
+public class ThriftServerAddressProviderZookeeper implements ThriftServerAddressProvider, InitializingBean ,Closeable{
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
