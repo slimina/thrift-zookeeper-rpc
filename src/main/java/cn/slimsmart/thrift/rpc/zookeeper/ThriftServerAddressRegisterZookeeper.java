@@ -1,5 +1,6 @@
 package cn.slimsmart.thrift.rpc.zookeeper;
 
+import java.io.Closeable;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.curator.framework.CuratorFramework;
@@ -14,7 +15,7 @@ import cn.slimsmart.thrift.rpc.ThriftException;
 /**
  *  注册服务列表到Zookeeper
  */
-public class ThriftServerAddressRegisterZookeeper implements ThriftServerAddressRegister{
+public class ThriftServerAddressRegisterZookeeper implements ThriftServerAddressRegister,Closeable{
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	

@@ -1,5 +1,6 @@
 package cn.slimsmart.thrift.rpc;
 
+import java.io.Closeable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -19,7 +20,7 @@ import cn.slimsmart.thrift.rpc.zookeeper.ThriftServerAddressProvider;
  * 客户端代理
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-public class ThriftServiceClientProxyFactory implements FactoryBean, InitializingBean {
+public class ThriftServiceClientProxyFactory implements FactoryBean, InitializingBean,Closeable {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 

@@ -1,5 +1,6 @@
 package cn.slimsmart.thrift.rpc;
 
+import java.io.Closeable;
 import java.lang.instrument.IllegalClassFormatException;
 import java.lang.reflect.Constructor;
 
@@ -20,7 +21,7 @@ import cn.slimsmart.thrift.rpc.zookeeper.ThriftServerIpResolve;
 /**
  * 服务端注册服务工厂
  */
-public class ThriftServiceServerFactory implements InitializingBean {
+public class ThriftServiceServerFactory implements InitializingBean ,Closeable{
 	// 服务注册本机端口
 	private Integer port = 8299;
 	// 优先级

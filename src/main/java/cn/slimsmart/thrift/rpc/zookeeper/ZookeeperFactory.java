@@ -1,5 +1,7 @@
 package cn.slimsmart.thrift.rpc.zookeeper;
 
+import java.io.Closeable;
+
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -9,7 +11,7 @@ import org.springframework.util.StringUtils;
 /**
  * 获取zookeeper客户端链接
  */
-public class ZookeeperFactory implements FactoryBean<CuratorFramework> {
+public class ZookeeperFactory implements FactoryBean<CuratorFramework> ,Closeable{
 
 	private String zkHosts;
 	// session超时
