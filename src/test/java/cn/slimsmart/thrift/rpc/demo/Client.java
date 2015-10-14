@@ -1,5 +1,8 @@
 package cn.slimsmart.thrift.rpc.demo;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
@@ -7,6 +10,8 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import cn.slimsmart.thrift.rpc.ThriftServiceClientProxyFactory;
 
 //客户端调用
 @SuppressWarnings("resource")
@@ -18,9 +23,20 @@ public class Client {
 
 	public static void spring() {
 		try {
-			ApplicationContext context = new ClassPathXmlApplicationContext("spring-context-thrift-client.xml");
+			final ApplicationContext context = new ClassPathXmlApplicationContext("spring-context-thrift-client.xml");
 			EchoSerivce.Iface echoSerivce = (EchoSerivce.Iface) context.getBean("echoSerivce");
 			System.out.println(echoSerivce.echo("hello--echo"));
+			//关闭连接的钩子
+			Runtime.getRuntime().addShutdownHook(new Thread() {
+                public void run() {
+                	Map<String,ThriftServiceClientProxyFactory>
+                	clientMap = context.getBeansOfType(ThriftServiceClientProxyFactory.class);
+                	for(Entry<String, ThriftServiceClientProxyFactory> client : clientMap.entrySet()){
+                		System.out.println("serviceName : "+client.getKey() + ",class obj: "+client.getValue());
+                		client.getValue().close();
+                	}
+                }
+            });
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
