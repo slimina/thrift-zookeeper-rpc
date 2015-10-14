@@ -1,4 +1,6 @@
 #thrift 集成spring、zookeeper代码示例
+博客地址：http://blog.csdn.net/zhu_tianwei/article/details/44115667
+
 对于Thrift服务化的改造，主要是客户端，可以从如下几个方面进行：
 
 1.服务端的服务注册，客户端自动发现，无需手工修改配置，这里我们使用zookeeper，但由于zookeeper本身提供的客户端使用较为复杂，因此采用curator-recipes工具类进行处理服务的注册与发现。
