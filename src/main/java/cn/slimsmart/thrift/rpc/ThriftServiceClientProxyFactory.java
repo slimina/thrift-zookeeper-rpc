@@ -1,6 +1,7 @@
 package cn.slimsmart.thrift.rpc;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -115,10 +116,22 @@ public class ThriftServiceClientProxyFactory implements FactoryBean, Initializin
 	public boolean isSingleton() {
 		return true;
 	}
-
+	
+	@Override
 	public void close() {
+		if(pool!=null){
+			try {
+				pool.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		if (serverAddressProvider != null) {
-			serverAddressProvider.close();
+			try {
+				serverAddressProvider.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
