@@ -83,7 +83,7 @@ public class ThriftClientPoolFactory extends BasePoolableObjectFactory<TServiceC
 	public TServiceClient makeObject() throws Exception {
 		InetSocketAddress address = serverAddressProvider.selector();
 		if(address==null){
-			new ThriftException("No provider available for remote service");
+			throw new ThriftException("No provider available for remote service");
 		}
 		TSocket tsocket = new TSocket(address.getHostName(), address.getPort());
 		TTransport transport = new TFramedTransport(tsocket);
